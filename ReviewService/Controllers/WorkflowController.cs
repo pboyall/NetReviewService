@@ -48,6 +48,7 @@ namespace ReviewService.Controllers
             AccessType = (int)NodeDef.AccessType;
             RelationType = NodeDef.RelationTypeId;
             //Just done one group for demonstration purposes
+            //&& a.RelationTypeId.Equals(RelationType)
             GroupRels = db.GroupRoleRelations.FirstOrDefault(a => a.ApprovalProcessId.Equals(ApprovalProcessId) && a.MasterGroupId.Equals(MasterGroupId) );
             RelativeGroupId = (int)GroupRels.RelativeGroupId;
 
