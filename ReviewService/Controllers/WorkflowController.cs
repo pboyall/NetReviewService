@@ -18,12 +18,27 @@ namespace ReviewService.Controllers
         private ReviewProjectEntities2 db = new ReviewProjectEntities2();
         public int ApprovalProcessId { get; set; }
         public int RaiserUserId { get; set; }
+        public int MasterGroupId { get; set; }
 
         public void InitialiseWorkflow() {
 
-            ApprovalProcessType TypeDefinition = db.ApprovalProcessTypes.FirstOrDefault(a => a.ApprovalProcessId.Equals(ApprovalProcessId));
+            //TODO: Error Checking
 
-            var StartNodeId = TypeDefinition.StartNodeId;
+            int StartNodeId;
+            int NodeId;
+            int AccessType;
+
+            ApprovalProcessType TypeDefinition;
+            BranchNode NodeDef;
+
+            //Get Start Node for this Workflow Process Type
+            TypeDefinition = db.ApprovalProcessTypes.FirstOrDefault(a => a.ApprovalProcessId.Equals(ApprovalProcessId));
+            StartNodeId = (int)TypeDefinition.StartNodeId;
+            //Get Relationship to use to send this Node off for approval 
+            NodeDef = db.BranchNodes.FirstOrDefault(a => a.NodeId.Equals(StartNodeId));
+            NodeId = NodeDef.NodeId;
+
+
 
             ReviewTask reviewTask = new ReviewTask();
 
