@@ -1,0 +1,2086 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ReviewProjectModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AccessType">
+          <Key>
+            <PropertyRef Name="AccessTypeId" />
+          </Key>
+          <Property Name="AccessTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AccessDescription" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="ApprovalProcessTypes">
+          <Key>
+            <PropertyRef Name="ApprovalProcessId" />
+          </Key>
+          <Property Name="ApprovalProcessId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StartNodeId" Type="int" />
+          <Property Name="ApprovalType" Type="nvarchar(max)" />
+          <Property Name="CompanyId" Type="int" />
+          <Property Name="FunctionId" Type="int" />
+          <Property Name="ProductId" Type="int" />
+          <Property Name="RegionId" Type="int" />
+        </EntityType>
+        <EntityType Name="Audit_Log">
+          <Key>
+            <PropertyRef Name="AuditId" />
+          </Key>
+          <Property Name="AuditId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PersonId" Type="int" Nullable="false" />
+          <Property Name="DelegateId" Type="int" />
+          <Property Name="TableName" Type="nvarchar(max)" />
+          <Property Name="ColumnName" Type="nvarchar(max)" />
+          <Property Name="AuditedAction" Type="nvarchar(max)" />
+          <Property Name="AuditCriteria" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="AuditDefinition">
+          <Key>
+            <PropertyRef Name="AuditDefinitionId" />
+          </Key>
+          <Property Name="AuditDefinitionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TableName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ColumnName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="AuditOn" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="BranchCondition">
+          <Key>
+            <PropertyRef Name="ConditionId" />
+          </Key>
+          <Property Name="ConditionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ConditionTest" Type="nvarchar(max)" />
+          <Property Name="ConditionDescription" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="BranchNode">
+          <Key>
+            <PropertyRef Name="GuardId" />
+          </Key>
+          <Property Name="GuardId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NodeId" Type="int" Nullable="false" />
+          <Property Name="OutputNodeId" Type="int" />
+          <Property Name="ConditionId" Type="int" Nullable="false" />
+          <Property Name="RelationTypeId" Type="int" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" />
+          <Property Name="AccessType" Type="int" />
+        </EntityType>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="CompanyId" />
+          </Key>
+          <Property Name="CompanyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CorpFunction">
+          <Key>
+            <PropertyRef Name="FunctionId" />
+          </Key>
+          <Property Name="FunctionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FunctionName" Type="nchar" MaxLength="10" />
+          <Property Name="CompanyID" Type="int" />
+        </EntityType>
+        <EntityType Name="DelegateTaskAssignment">
+          <Key>
+            <PropertyRef Name="TaskId" />
+            <PropertyRef Name="PersonId" />
+            <PropertyRef Name="DelegateId" />
+          </Key>
+          <Property Name="TaskId" Type="int" Nullable="false" />
+          <Property Name="PersonId" Type="int" Nullable="false" />
+          <Property Name="DelegateId" Type="int" Nullable="false" />
+          <Property Name="DateAssigned" Type="datetime" />
+        </EntityType>
+        <EntityType Name="GroupRoleRelation">
+          <Key>
+            <PropertyRef Name="GroupRelationId" />
+          </Key>
+          <Property Name="GroupRelationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MasterGroupId" Type="int" />
+          <Property Name="RelativeGroupId" Type="int" />
+          <Property Name="DateUpdated" Type="datetime" />
+          <Property Name="Enabled" Type="int" />
+          <Property Name="RelationTypeId" Type="int" Nullable="false" />
+          <Property Name="StartDate" Type="datetime" />
+          <Property Name="EndDate" Type="datetime" />
+          <Property Name="ApprovalProcessId" Type="int" />
+          <Property Name="GroupRoleWeight" Type="int" />
+        </EntityType>
+        <EntityType Name="ITSystem">
+          <Key>
+            <PropertyRef Name="SystemId" />
+          </Key>
+          <Property Name="SystemId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SystemName" Type="nvarchar(max)" />
+          <Property Name="SystemEndpoint" Type="nvarchar(max)" />
+          <Property Name="URL" Type="nvarchar(max)" />
+          <Property Name="RedirectURL" Type="nvarchar(max)" />
+          <Property Name="SystemHash" Type="nvarchar(max)" />
+          <Property Name="SystemToken" Type="nvarchar(max)" />
+          <Property Name="SystemSharedSecret" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Node">
+          <Key>
+            <PropertyRef Name="NodeId" />
+          </Key>
+          <Property Name="NodeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NodeDescription" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="NodeType" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="PersonDelegate">
+          <Key>
+            <PropertyRef Name="DelegationId" />
+          </Key>
+          <Property Name="PersonId" Type="int" Nullable="false" />
+          <Property Name="DelegateId" Type="int" Nullable="false" />
+          <Property Name="DateUpdated" Type="datetime" Nullable="false" />
+          <Property Name="Enabled" Type="int" />
+          <Property Name="StartDate" Type="datetime" />
+          <Property Name="EndDate" Type="datetime" />
+          <Property Name="RelationTypeId" Type="int" />
+          <Property Name="GroupId" Type="int" />
+          <Property Name="DelegationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductName" Type="nvarchar(max)" />
+          <Property Name="FunctionId" Type="int" />
+        </EntityType>
+        <EntityType Name="Region">
+          <Key>
+            <PropertyRef Name="RegionId" />
+          </Key>
+          <Property Name="RegionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RegionName" Type="nchar" MaxLength="10" />
+          <Property Name="ProductId" Type="int" />
+        </EntityType>
+        <EntityType Name="RelationType">
+          <Key>
+            <PropertyRef Name="RelationTypeId" />
+          </Key>
+          <Property Name="RelationTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RelationDescription" Type="nvarchar(max)" />
+          <Property Name="Recursive" Type="int" />
+          <Property Name="NumberofRecursions" Type="int" />
+          <Property Name="InverseRelationTypeId" Type="int" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="SysGroup">
+          <Key>
+            <PropertyRef Name="GroupId" />
+          </Key>
+          <Property Name="GroupId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GroupName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CompanyId" Type="int" />
+          <Property Name="FunctionId" Type="int" />
+          <Property Name="ProductId" Type="int" />
+          <Property Name="RegionId" Type="int" />
+        </EntityType>
+        <EntityType Name="SystemUser">
+          <Key>
+            <PropertyRef Name="SystemId" />
+            <PropertyRef Name="PersonId" />
+          </Key>
+          <Property Name="SystemId" Type="int" Nullable="false" />
+          <Property Name="PersonId" Type="int" Nullable="false" />
+          <Property Name="SystemUserIdentifier" Type="nvarchar(max)" />
+          <Property Name="SystemUserPassword" Type="nvarchar(max)" />
+          <Property Name="SystemHash" Type="nvarchar(max)" />
+          <Property Name="SystemSharedSecret" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Task">
+          <Key>
+            <PropertyRef Name="TaskId" />
+          </Key>
+          <Property Name="TaskId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DateUpdated" Type="datetime" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" />
+          <Property Name="RaiserUserId" Type="int" />
+          <Property Name="ApprovalProcessType" Type="int" />
+        </EntityType>
+        <EntityType Name="TaskAssignment">
+          <Key>
+            <PropertyRef Name="TaskId" />
+            <PropertyRef Name="GroupId" />
+          </Key>
+          <Property Name="TaskId" Type="int" Nullable="false" />
+          <Property Name="DateAssigned" Type="datetime" />
+          <Property Name="GroupId" Type="int" Nullable="false" />
+          <Property Name="AccessType" Type="nvarchar" MaxLength="50" />
+          <Property Name="NodeId" Type="int" />
+        </EntityType>
+        <EntityType Name="TaskAssignmentHistory">
+          <Key>
+            <PropertyRef Name="TaskAssignmentHistoryId" />
+          </Key>
+          <Property Name="TaskId" Type="int" />
+          <Property Name="GroupId" Type="int" />
+          <Property Name="NodeId" Type="int" />
+          <Property Name="DateUpdated" Type="datetime" />
+          <Property Name="Outcome" Type="nvarchar" MaxLength="50" />
+          <Property Name="TaskAssignmentHistoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ApproverId" Type="int" />
+          <Property Name="ConditionTest" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TaskNode">
+          <Key>
+            <PropertyRef Name="TaskNodeId" />
+          </Key>
+          <Property Name="TaskId" Type="int" Nullable="false" />
+          <Property Name="NodeId" Type="int" Nullable="false" />
+          <Property Name="DateUpdated" Type="date" />
+          <Property Name="GroupId" Type="int" />
+          <Property Name="TaskNodeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserGroup">
+          <Key>
+            <PropertyRef Name="GroupId" />
+            <PropertyRef Name="PersonId" />
+            <PropertyRef Name="DateUpdated" />
+          </Key>
+          <Property Name="GroupId" Type="int" Nullable="false" />
+          <Property Name="PersonId" Type="int" Nullable="false" />
+          <Property Name="DateUpdated" Type="datetime" Nullable="false" />
+          <Property Name="Enabled" Type="int" />
+          <Property Name="StartDate" Type="datetime" />
+          <Property Name="EndDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="UserPwdHistory">
+          <Key>
+            <PropertyRef Name="PersonId" />
+            <PropertyRef Name="DateUpdated" />
+          </Key>
+          <Property Name="PersonId" Type="int" Nullable="false" />
+          <Property Name="Password" Type="nvarchar(max)" />
+          <Property Name="Salt" Type="nvarchar(max)" />
+          <Property Name="DateUpdated" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="PersonId" />
+          </Key>
+          <Property Name="PersonId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Enabled" Type="int" />
+          <Property Name="LoginId" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ApprovalProcessTypes_Company">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="ApprovalProcessTypes" Type="Self.ApprovalProcessTypes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="CompanyId" />
+            </Principal>
+            <Dependent Role="ApprovalProcessTypes">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ApprovalProcessTypes_Function">
+          <End Role="CorpFunction" Type="Self.CorpFunction" Multiplicity="0..1" />
+          <End Role="ApprovalProcessTypes" Type="Self.ApprovalProcessTypes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CorpFunction">
+              <PropertyRef Name="FunctionId" />
+            </Principal>
+            <Dependent Role="ApprovalProcessTypes">
+              <PropertyRef Name="FunctionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ApprovalProcessTypes_Node">
+          <End Role="Node" Type="Self.Node" Multiplicity="0..1" />
+          <End Role="ApprovalProcessTypes" Type="Self.ApprovalProcessTypes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Node">
+              <PropertyRef Name="NodeId" />
+            </Principal>
+            <Dependent Role="ApprovalProcessTypes">
+              <PropertyRef Name="StartNodeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ApprovalProcessTypes_Product">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="ApprovalProcessTypes" Type="Self.ApprovalProcessTypes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="ApprovalProcessTypes">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ApprovalProcessTypes_Region">
+          <End Role="Region" Type="Self.Region" Multiplicity="0..1" />
+          <End Role="ApprovalProcessTypes" Type="Self.ApprovalProcessTypes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Region">
+              <PropertyRef Name="RegionId" />
+            </Principal>
+            <Dependent Role="ApprovalProcessTypes">
+              <PropertyRef Name="RegionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BranchNode_BranchCondition">
+          <End Role="BranchCondition" Type="Self.BranchCondition" Multiplicity="1" />
+          <End Role="BranchNode" Type="Self.BranchNode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BranchCondition">
+              <PropertyRef Name="ConditionId" />
+            </Principal>
+            <Dependent Role="BranchNode">
+              <PropertyRef Name="ConditionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BranchNode_Node">
+          <End Role="Node" Type="Self.Node" Multiplicity="0..1" />
+          <End Role="BranchNode" Type="Self.BranchNode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Node">
+              <PropertyRef Name="NodeId" />
+            </Principal>
+            <Dependent Role="BranchNode">
+              <PropertyRef Name="OutputNodeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BranchNode_Node1">
+          <End Role="Node" Type="Self.Node" Multiplicity="1" />
+          <End Role="BranchNode" Type="Self.BranchNode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Node">
+              <PropertyRef Name="NodeId" />
+            </Principal>
+            <Dependent Role="BranchNode">
+              <PropertyRef Name="NodeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DelegateTaskAssignment_Task">
+          <End Role="Task" Type="Self.Task" Multiplicity="1" />
+          <End Role="DelegateTaskAssignment" Type="Self.DelegateTaskAssignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="TaskId" />
+            </Principal>
+            <Dependent Role="DelegateTaskAssignment">
+              <PropertyRef Name="TaskId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DelegateTaskAssignment_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="DelegateTaskAssignment" Type="Self.DelegateTaskAssignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="DelegateTaskAssignment">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Group_Function">
+          <End Role="CorpFunction" Type="Self.CorpFunction" Multiplicity="0..1" />
+          <End Role="SysGroup" Type="Self.SysGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CorpFunction">
+              <PropertyRef Name="FunctionId" />
+            </Principal>
+            <Dependent Role="SysGroup">
+              <PropertyRef Name="FunctionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Group_Product">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="SysGroup" Type="Self.SysGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="SysGroup">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GroupRelation_RelationType">
+          <End Role="RelationType" Type="Self.RelationType" Multiplicity="1" />
+          <End Role="GroupRoleRelation" Type="Self.GroupRoleRelation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RelationType">
+              <PropertyRef Name="RelationTypeId" />
+            </Principal>
+            <Dependent Role="GroupRoleRelation">
+              <PropertyRef Name="RelationTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GroupRoleRelation_ApprovalProcessTypes">
+          <End Role="ApprovalProcessTypes" Type="Self.ApprovalProcessTypes" Multiplicity="0..1" />
+          <End Role="GroupRoleRelation" Type="Self.GroupRoleRelation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ApprovalProcessTypes">
+              <PropertyRef Name="ApprovalProcessId" />
+            </Principal>
+            <Dependent Role="GroupRoleRelation">
+              <PropertyRef Name="ApprovalProcessId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MasterGroupRoleRelation_SysGroup">
+          <End Role="SysGroup" Type="Self.SysGroup" Multiplicity="0..1" />
+          <End Role="GroupRoleRelation" Type="Self.GroupRoleRelation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SysGroup">
+              <PropertyRef Name="GroupId" />
+            </Principal>
+            <Dependent Role="GroupRoleRelation">
+              <PropertyRef Name="MasterGroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersonDelegate_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="PersonDelegate" Type="Self.PersonDelegate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="PersonDelegate">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersonDelegate_Users1">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="PersonDelegate" Type="Self.PersonDelegate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="PersonDelegate">
+              <PropertyRef Name="DelegateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Function">
+          <End Role="CorpFunction" Type="Self.CorpFunction" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CorpFunction">
+              <PropertyRef Name="FunctionId" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="FunctionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Region_Product">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="Region" Type="Self.Region" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="Region">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationType_RelationType">
+          <End Role="RelationType" Type="Self.RelationType" Multiplicity="0..1" />
+          <End Role="RelationType1" Type="Self.RelationType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RelationType">
+              <PropertyRef Name="RelationTypeId" />
+            </Principal>
+            <Dependent Role="RelationType1">
+              <PropertyRef Name="InverseRelationTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelativeGroupRoleRelation_SysGroup">
+          <End Role="SysGroup" Type="Self.SysGroup" Multiplicity="0..1" />
+          <End Role="GroupRoleRelation" Type="Self.GroupRoleRelation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SysGroup">
+              <PropertyRef Name="GroupId" />
+            </Principal>
+            <Dependent Role="GroupRoleRelation">
+              <PropertyRef Name="RelativeGroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SysGroup_Company">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="SysGroup" Type="Self.SysGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="CompanyId" />
+            </Principal>
+            <Dependent Role="SysGroup">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SystemUser_System">
+          <End Role="ITSystem" Type="Self.ITSystem" Multiplicity="1" />
+          <End Role="SystemUser" Type="Self.SystemUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ITSystem">
+              <PropertyRef Name="SystemId" />
+            </Principal>
+            <Dependent Role="SystemUser">
+              <PropertyRef Name="SystemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SystemUser_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="SystemUser" Type="Self.SystemUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="SystemUser">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TaskAssignment_Group">
+          <End Role="SysGroup" Type="Self.SysGroup" Multiplicity="1" />
+          <End Role="TaskAssignment" Type="Self.TaskAssignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SysGroup">
+              <PropertyRef Name="GroupId" />
+            </Principal>
+            <Dependent Role="TaskAssignment">
+              <PropertyRef Name="GroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TaskAssignment_Task">
+          <End Role="Task" Type="Self.Task" Multiplicity="1" />
+          <End Role="TaskAssignment" Type="Self.TaskAssignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="TaskId" />
+            </Principal>
+            <Dependent Role="TaskAssignment">
+              <PropertyRef Name="TaskId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TaskAssignmentHistory_Node">
+          <End Role="Node" Type="Self.Node" Multiplicity="0..1" />
+          <End Role="TaskAssignmentHistory" Type="Self.TaskAssignmentHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Node">
+              <PropertyRef Name="NodeId" />
+            </Principal>
+            <Dependent Role="TaskAssignmentHistory">
+              <PropertyRef Name="NodeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TaskAssignmentHistory_SysGroup">
+          <End Role="SysGroup" Type="Self.SysGroup" Multiplicity="0..1" />
+          <End Role="TaskAssignmentHistory" Type="Self.TaskAssignmentHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SysGroup">
+              <PropertyRef Name="GroupId" />
+            </Principal>
+            <Dependent Role="TaskAssignmentHistory">
+              <PropertyRef Name="GroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TaskAssignmentHistory_Task">
+          <End Role="Task" Type="Self.Task" Multiplicity="0..1" />
+          <End Role="TaskAssignmentHistory" Type="Self.TaskAssignmentHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="TaskId" />
+            </Principal>
+            <Dependent Role="TaskAssignmentHistory">
+              <PropertyRef Name="TaskId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TaskNode_Node">
+          <End Role="Node" Type="Self.Node" Multiplicity="1" />
+          <End Role="TaskNode" Type="Self.TaskNode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Node">
+              <PropertyRef Name="NodeId" />
+            </Principal>
+            <Dependent Role="TaskNode">
+              <PropertyRef Name="NodeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TaskNode_Task">
+          <End Role="Task" Type="Self.Task" Multiplicity="1" />
+          <End Role="TaskNode" Type="Self.TaskNode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="TaskId" />
+            </Principal>
+            <Dependent Role="TaskNode">
+              <PropertyRef Name="TaskId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserGroup_Group">
+          <End Role="SysGroup" Type="Self.SysGroup" Multiplicity="1" />
+          <End Role="UserGroup" Type="Self.UserGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SysGroup">
+              <PropertyRef Name="GroupId" />
+            </Principal>
+            <Dependent Role="UserGroup">
+              <PropertyRef Name="GroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserGroup_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UserGroup" Type="Self.UserGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="UserGroup">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserPwdHistory_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="UserPwdHistory" Type="Self.UserPwdHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="UserPwdHistory">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ReviewProjectModelStoreContainer">
+          <EntitySet Name="AccessType" EntityType="Self.AccessType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ApprovalProcessTypes" EntityType="Self.ApprovalProcessTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Audit_Log" EntityType="Self.Audit_Log" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AuditDefinition" EntityType="Self.AuditDefinition" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BranchCondition" EntityType="Self.BranchCondition" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BranchNode" EntityType="Self.BranchNode" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CorpFunction" EntityType="Self.CorpFunction" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DelegateTaskAssignment" EntityType="Self.DelegateTaskAssignment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GroupRoleRelation" EntityType="Self.GroupRoleRelation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ITSystem" EntityType="Self.ITSystem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Node" EntityType="Self.Node" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PersonDelegate" EntityType="Self.PersonDelegate" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Region" EntityType="Self.Region" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RelationType" EntityType="Self.RelationType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SysGroup" EntityType="Self.SysGroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SystemUser" EntityType="Self.SystemUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Task" EntityType="Self.Task" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TaskAssignment" EntityType="Self.TaskAssignment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TaskAssignmentHistory" EntityType="Self.TaskAssignmentHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TaskNode" EntityType="Self.TaskNode" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserGroup" EntityType="Self.UserGroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserPwdHistory" EntityType="Self.UserPwdHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ApprovalProcessTypes_Company" Association="Self.FK_ApprovalProcessTypes_Company">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="ApprovalProcessTypes" EntitySet="ApprovalProcessTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ApprovalProcessTypes_Function" Association="Self.FK_ApprovalProcessTypes_Function">
+            <End Role="CorpFunction" EntitySet="CorpFunction" />
+            <End Role="ApprovalProcessTypes" EntitySet="ApprovalProcessTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ApprovalProcessTypes_Node" Association="Self.FK_ApprovalProcessTypes_Node">
+            <End Role="Node" EntitySet="Node" />
+            <End Role="ApprovalProcessTypes" EntitySet="ApprovalProcessTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ApprovalProcessTypes_Product" Association="Self.FK_ApprovalProcessTypes_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="ApprovalProcessTypes" EntitySet="ApprovalProcessTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ApprovalProcessTypes_Region" Association="Self.FK_ApprovalProcessTypes_Region">
+            <End Role="Region" EntitySet="Region" />
+            <End Role="ApprovalProcessTypes" EntitySet="ApprovalProcessTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BranchNode_BranchCondition" Association="Self.FK_BranchNode_BranchCondition">
+            <End Role="BranchCondition" EntitySet="BranchCondition" />
+            <End Role="BranchNode" EntitySet="BranchNode" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BranchNode_Node" Association="Self.FK_BranchNode_Node">
+            <End Role="Node" EntitySet="Node" />
+            <End Role="BranchNode" EntitySet="BranchNode" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BranchNode_Node1" Association="Self.FK_BranchNode_Node1">
+            <End Role="Node" EntitySet="Node" />
+            <End Role="BranchNode" EntitySet="BranchNode" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DelegateTaskAssignment_Task" Association="Self.FK_DelegateTaskAssignment_Task">
+            <End Role="Task" EntitySet="Task" />
+            <End Role="DelegateTaskAssignment" EntitySet="DelegateTaskAssignment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DelegateTaskAssignment_Users" Association="Self.FK_DelegateTaskAssignment_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="DelegateTaskAssignment" EntitySet="DelegateTaskAssignment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Group_Function" Association="Self.FK_Group_Function">
+            <End Role="CorpFunction" EntitySet="CorpFunction" />
+            <End Role="SysGroup" EntitySet="SysGroup" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Group_Product" Association="Self.FK_Group_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="SysGroup" EntitySet="SysGroup" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GroupRelation_RelationType" Association="Self.FK_GroupRelation_RelationType">
+            <End Role="RelationType" EntitySet="RelationType" />
+            <End Role="GroupRoleRelation" EntitySet="GroupRoleRelation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GroupRoleRelation_ApprovalProcessTypes" Association="Self.FK_GroupRoleRelation_ApprovalProcessTypes">
+            <End Role="ApprovalProcessTypes" EntitySet="ApprovalProcessTypes" />
+            <End Role="GroupRoleRelation" EntitySet="GroupRoleRelation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MasterGroupRoleRelation_SysGroup" Association="Self.FK_MasterGroupRoleRelation_SysGroup">
+            <End Role="SysGroup" EntitySet="SysGroup" />
+            <End Role="GroupRoleRelation" EntitySet="GroupRoleRelation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonDelegate_Users" Association="Self.FK_PersonDelegate_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="PersonDelegate" EntitySet="PersonDelegate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonDelegate_Users1" Association="Self.FK_PersonDelegate_Users1">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="PersonDelegate" EntitySet="PersonDelegate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Function" Association="Self.FK_Product_Function">
+            <End Role="CorpFunction" EntitySet="CorpFunction" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Region_Product" Association="Self.FK_Region_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="Region" EntitySet="Region" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationType_RelationType" Association="Self.FK_RelationType_RelationType">
+            <End Role="RelationType" EntitySet="RelationType" />
+            <End Role="RelationType1" EntitySet="RelationType" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelativeGroupRoleRelation_SysGroup" Association="Self.FK_RelativeGroupRoleRelation_SysGroup">
+            <End Role="SysGroup" EntitySet="SysGroup" />
+            <End Role="GroupRoleRelation" EntitySet="GroupRoleRelation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SysGroup_Company" Association="Self.FK_SysGroup_Company">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="SysGroup" EntitySet="SysGroup" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SystemUser_System" Association="Self.FK_SystemUser_System">
+            <End Role="ITSystem" EntitySet="ITSystem" />
+            <End Role="SystemUser" EntitySet="SystemUser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SystemUser_Users" Association="Self.FK_SystemUser_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="SystemUser" EntitySet="SystemUser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TaskAssignment_Group" Association="Self.FK_TaskAssignment_Group">
+            <End Role="SysGroup" EntitySet="SysGroup" />
+            <End Role="TaskAssignment" EntitySet="TaskAssignment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TaskAssignment_Task" Association="Self.FK_TaskAssignment_Task">
+            <End Role="Task" EntitySet="Task" />
+            <End Role="TaskAssignment" EntitySet="TaskAssignment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TaskAssignmentHistory_Node" Association="Self.FK_TaskAssignmentHistory_Node">
+            <End Role="Node" EntitySet="Node" />
+            <End Role="TaskAssignmentHistory" EntitySet="TaskAssignmentHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TaskAssignmentHistory_SysGroup" Association="Self.FK_TaskAssignmentHistory_SysGroup">
+            <End Role="SysGroup" EntitySet="SysGroup" />
+            <End Role="TaskAssignmentHistory" EntitySet="TaskAssignmentHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TaskAssignmentHistory_Task" Association="Self.FK_TaskAssignmentHistory_Task">
+            <End Role="Task" EntitySet="Task" />
+            <End Role="TaskAssignmentHistory" EntitySet="TaskAssignmentHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TaskNode_Node" Association="Self.FK_TaskNode_Node">
+            <End Role="Node" EntitySet="Node" />
+            <End Role="TaskNode" EntitySet="TaskNode" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TaskNode_Task" Association="Self.FK_TaskNode_Task">
+            <End Role="Task" EntitySet="Task" />
+            <End Role="TaskNode" EntitySet="TaskNode" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserGroup_Group" Association="Self.FK_UserGroup_Group">
+            <End Role="SysGroup" EntitySet="SysGroup" />
+            <End Role="UserGroup" EntitySet="UserGroup" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserGroup_Users" Association="Self.FK_UserGroup_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserGroup" EntitySet="UserGroup" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserPwdHistory_Users" Association="Self.FK_UserPwdHistory_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserPwdHistory" EntitySet="UserPwdHistory" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ReviewProjectModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AccessType">
+          <Key>
+            <PropertyRef Name="AccessTypeId" />
+          </Key>
+          <Property Name="AccessTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AccessDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ApprovalProcessType">
+          <Key>
+            <PropertyRef Name="ApprovalProcessId" />
+          </Key>
+          <Property Name="ApprovalProcessId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StartNodeId" Type="Int32" />
+          <Property Name="ApprovalType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="FunctionId" Type="Int32" />
+          <Property Name="ProductId" Type="Int32" />
+          <Property Name="RegionId" Type="Int32" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_ApprovalProcessTypes_Company" FromRole="ApprovalProcessTypes" ToRole="Company" />
+          <NavigationProperty Name="CorpFunction" Relationship="Self.FK_ApprovalProcessTypes_Function" FromRole="ApprovalProcessTypes" ToRole="CorpFunction" />
+          <NavigationProperty Name="Node" Relationship="Self.FK_ApprovalProcessTypes_Node" FromRole="ApprovalProcessTypes" ToRole="Node" />
+          <NavigationProperty Name="Product" Relationship="Self.FK_ApprovalProcessTypes_Product" FromRole="ApprovalProcessTypes" ToRole="Product" />
+          <NavigationProperty Name="Region" Relationship="Self.FK_ApprovalProcessTypes_Region" FromRole="ApprovalProcessTypes" ToRole="Region" />
+          <NavigationProperty Name="GroupRoleRelations" Relationship="Self.FK_GroupRoleRelation_ApprovalProcessTypes" FromRole="ApprovalProcessTypes" ToRole="GroupRoleRelation" />
+        </EntityType>
+        <EntityType Name="Audit_Log">
+          <Key>
+            <PropertyRef Name="AuditId" />
+          </Key>
+          <Property Name="AuditId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <Property Name="DelegateId" Type="Int32" />
+          <Property Name="TableName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ColumnName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AuditedAction" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AuditCriteria" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="AuditDefinition">
+          <Key>
+            <PropertyRef Name="AuditDefinitionId" />
+          </Key>
+          <Property Name="AuditDefinitionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TableName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ColumnName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AuditOn" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="BranchCondition">
+          <Key>
+            <PropertyRef Name="ConditionId" />
+          </Key>
+          <Property Name="ConditionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ConditionTest" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ConditionDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="BranchNodes" Relationship="Self.FK_BranchNode_BranchCondition" FromRole="BranchCondition" ToRole="BranchNode" />
+        </EntityType>
+        <EntityType Name="BranchNode">
+          <Key>
+            <PropertyRef Name="GuardId" />
+          </Key>
+          <Property Name="GuardId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NodeId" Type="Int32" Nullable="false" />
+          <Property Name="OutputNodeId" Type="Int32" />
+          <Property Name="ConditionId" Type="Int32" Nullable="false" />
+          <Property Name="RelationTypeId" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AccessType" Type="Int32" />
+          <NavigationProperty Name="BranchCondition" Relationship="Self.FK_BranchNode_BranchCondition" FromRole="BranchNode" ToRole="BranchCondition" />
+          <NavigationProperty Name="Node" Relationship="Self.FK_BranchNode_Node" FromRole="BranchNode" ToRole="Node" />
+          <NavigationProperty Name="Node1" Relationship="Self.FK_BranchNode_Node1" FromRole="BranchNode" ToRole="Node" />
+        </EntityType>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="CompanyId" />
+          </Key>
+          <Property Name="CompanyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ApprovalProcessTypes" Relationship="Self.FK_ApprovalProcessTypes_Company" FromRole="Company" ToRole="ApprovalProcessTypes" />
+          <NavigationProperty Name="SysGroups" Relationship="Self.FK_SysGroup_Company" FromRole="Company" ToRole="SysGroup" />
+        </EntityType>
+        <EntityType Name="CorpFunction">
+          <Key>
+            <PropertyRef Name="FunctionId" />
+          </Key>
+          <Property Name="FunctionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FunctionName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="CompanyID" Type="Int32" />
+          <NavigationProperty Name="ApprovalProcessTypes" Relationship="Self.FK_ApprovalProcessTypes_Function" FromRole="CorpFunction" ToRole="ApprovalProcessTypes" />
+          <NavigationProperty Name="SysGroups" Relationship="Self.FK_Group_Function" FromRole="CorpFunction" ToRole="SysGroup" />
+          <NavigationProperty Name="Products" Relationship="Self.FK_Product_Function" FromRole="CorpFunction" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="DelegateTaskAssignment">
+          <Key>
+            <PropertyRef Name="TaskId" />
+            <PropertyRef Name="PersonId" />
+            <PropertyRef Name="DelegateId" />
+          </Key>
+          <Property Name="TaskId" Type="Int32" Nullable="false" />
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <Property Name="DelegateId" Type="Int32" Nullable="false" />
+          <Property Name="DateAssigned" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Task" Relationship="Self.FK_DelegateTaskAssignment_Task" FromRole="DelegateTaskAssignment" ToRole="Task" />
+          <NavigationProperty Name="User" Relationship="Self.FK_DelegateTaskAssignment_Users" FromRole="DelegateTaskAssignment" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="GroupRoleRelation">
+          <Key>
+            <PropertyRef Name="GroupRelationId" />
+          </Key>
+          <Property Name="GroupRelationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MasterGroupId" Type="Int32" />
+          <Property Name="RelativeGroupId" Type="Int32" />
+          <Property Name="DateUpdated" Type="DateTime" Precision="3" />
+          <Property Name="Enabled" Type="Int32" />
+          <Property Name="RelationTypeId" Type="Int32" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+          <Property Name="ApprovalProcessId" Type="Int32" />
+          <Property Name="GroupRoleWeight" Type="Int32" />
+          <NavigationProperty Name="ApprovalProcessType" Relationship="Self.FK_GroupRoleRelation_ApprovalProcessTypes" FromRole="GroupRoleRelation" ToRole="ApprovalProcessTypes" />
+          <NavigationProperty Name="RelationType" Relationship="Self.FK_GroupRelation_RelationType" FromRole="GroupRoleRelation" ToRole="RelationType" />
+          <NavigationProperty Name="SysGroup" Relationship="Self.FK_MasterGroupRoleRelation_SysGroup" FromRole="GroupRoleRelation" ToRole="SysGroup" />
+          <NavigationProperty Name="SysGroup1" Relationship="Self.FK_RelativeGroupRoleRelation_SysGroup" FromRole="GroupRoleRelation" ToRole="SysGroup" />
+        </EntityType>
+        <EntityType Name="ITSystem">
+          <Key>
+            <PropertyRef Name="SystemId" />
+          </Key>
+          <Property Name="SystemId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SystemName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SystemEndpoint" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="URL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RedirectURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SystemHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SystemToken" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SystemSharedSecret" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="SystemUsers" Relationship="Self.FK_SystemUser_System" FromRole="ITSystem" ToRole="SystemUser" />
+        </EntityType>
+        <EntityType Name="Node">
+          <Key>
+            <PropertyRef Name="NodeId" />
+          </Key>
+          <Property Name="NodeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NodeDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NodeType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ApprovalProcessTypes" Relationship="Self.FK_ApprovalProcessTypes_Node" FromRole="Node" ToRole="ApprovalProcessTypes" />
+          <NavigationProperty Name="BranchNodes" Relationship="Self.FK_BranchNode_Node" FromRole="Node" ToRole="BranchNode" />
+          <NavigationProperty Name="BranchNodes1" Relationship="Self.FK_BranchNode_Node1" FromRole="Node" ToRole="BranchNode" />
+          <NavigationProperty Name="TaskAssignmentHistories" Relationship="Self.FK_TaskAssignmentHistory_Node" FromRole="Node" ToRole="TaskAssignmentHistory" />
+          <NavigationProperty Name="TaskNodes" Relationship="Self.FK_TaskNode_Node" FromRole="Node" ToRole="TaskNode" />
+        </EntityType>
+        <EntityType Name="PersonDelegate">
+          <Key>
+            <PropertyRef Name="DelegationId" />
+          </Key>
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <Property Name="DelegateId" Type="Int32" Nullable="false" />
+          <Property Name="DateUpdated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Enabled" Type="Int32" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+          <Property Name="RelationTypeId" Type="Int32" />
+          <Property Name="GroupId" Type="Int32" />
+          <Property Name="DelegationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="User" Relationship="Self.FK_PersonDelegate_Users" FromRole="PersonDelegate" ToRole="Users" />
+          <NavigationProperty Name="User1" Relationship="Self.FK_PersonDelegate_Users1" FromRole="PersonDelegate" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FunctionId" Type="Int32" />
+          <NavigationProperty Name="ApprovalProcessTypes" Relationship="Self.FK_ApprovalProcessTypes_Product" FromRole="Product" ToRole="ApprovalProcessTypes" />
+          <NavigationProperty Name="CorpFunction" Relationship="Self.FK_Product_Function" FromRole="Product" ToRole="CorpFunction" />
+          <NavigationProperty Name="SysGroups" Relationship="Self.FK_Group_Product" FromRole="Product" ToRole="SysGroup" />
+          <NavigationProperty Name="Regions" Relationship="Self.FK_Region_Product" FromRole="Product" ToRole="Region" />
+        </EntityType>
+        <EntityType Name="Region">
+          <Key>
+            <PropertyRef Name="RegionId" />
+          </Key>
+          <Property Name="RegionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RegionName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="ProductId" Type="Int32" />
+          <NavigationProperty Name="ApprovalProcessTypes" Relationship="Self.FK_ApprovalProcessTypes_Region" FromRole="Region" ToRole="ApprovalProcessTypes" />
+          <NavigationProperty Name="Product" Relationship="Self.FK_Region_Product" FromRole="Region" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="RelationType">
+          <Key>
+            <PropertyRef Name="RelationTypeId" />
+          </Key>
+          <Property Name="RelationTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RelationDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Recursive" Type="Int32" />
+          <Property Name="NumberofRecursions" Type="Int32" />
+          <Property Name="InverseRelationTypeId" Type="Int32" />
+          <NavigationProperty Name="GroupRoleRelations" Relationship="Self.FK_GroupRelation_RelationType" FromRole="RelationType" ToRole="GroupRoleRelation" />
+          <NavigationProperty Name="RelationType1" Relationship="Self.FK_RelationType_RelationType" FromRole="RelationType" ToRole="RelationType1" />
+          <NavigationProperty Name="RelationType2" Relationship="Self.FK_RelationType_RelationType" FromRole="RelationType1" ToRole="RelationType" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="SysGroup">
+          <Key>
+            <PropertyRef Name="GroupId" />
+          </Key>
+          <Property Name="GroupId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GroupName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CompanyId" Type="Int32" />
+          <Property Name="FunctionId" Type="Int32" />
+          <Property Name="ProductId" Type="Int32" />
+          <Property Name="RegionId" Type="Int32" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_SysGroup_Company" FromRole="SysGroup" ToRole="Company" />
+          <NavigationProperty Name="CorpFunction" Relationship="Self.FK_Group_Function" FromRole="SysGroup" ToRole="CorpFunction" />
+          <NavigationProperty Name="GroupRoleRelations" Relationship="Self.FK_MasterGroupRoleRelation_SysGroup" FromRole="SysGroup" ToRole="GroupRoleRelation" />
+          <NavigationProperty Name="GroupRoleRelations1" Relationship="Self.FK_RelativeGroupRoleRelation_SysGroup" FromRole="SysGroup" ToRole="GroupRoleRelation" />
+          <NavigationProperty Name="Product" Relationship="Self.FK_Group_Product" FromRole="SysGroup" ToRole="Product" />
+          <NavigationProperty Name="TaskAssignments" Relationship="Self.FK_TaskAssignment_Group" FromRole="SysGroup" ToRole="TaskAssignment" />
+          <NavigationProperty Name="TaskAssignmentHistories" Relationship="Self.FK_TaskAssignmentHistory_SysGroup" FromRole="SysGroup" ToRole="TaskAssignmentHistory" />
+          <NavigationProperty Name="UserGroups" Relationship="Self.FK_UserGroup_Group" FromRole="SysGroup" ToRole="UserGroup" />
+        </EntityType>
+        <EntityType Name="SystemUser">
+          <Key>
+            <PropertyRef Name="SystemId" />
+            <PropertyRef Name="PersonId" />
+          </Key>
+          <Property Name="SystemId" Type="Int32" Nullable="false" />
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <Property Name="SystemUserIdentifier" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SystemUserPassword" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SystemHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SystemSharedSecret" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ITSystem" Relationship="Self.FK_SystemUser_System" FromRole="SystemUser" ToRole="ITSystem" />
+          <NavigationProperty Name="User" Relationship="Self.FK_SystemUser_Users" FromRole="SystemUser" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="ReviewTask">
+          <Key>
+            <PropertyRef Name="TaskId" />
+          </Key>
+          <Property Name="TaskId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateUpdated" Type="DateTime" Precision="3" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RaiserUserId" Type="Int32" />
+          <Property Name="ApprovalProcessType" Type="Int32" />
+          <NavigationProperty Name="DelegateTaskAssignments" Relationship="Self.FK_DelegateTaskAssignment_Task" FromRole="Task" ToRole="DelegateTaskAssignment" />
+          <NavigationProperty Name="TaskAssignments" Relationship="Self.FK_TaskAssignment_Task" FromRole="Task" ToRole="TaskAssignment" />
+          <NavigationProperty Name="TaskAssignmentHistories" Relationship="Self.FK_TaskAssignmentHistory_Task" FromRole="Task" ToRole="TaskAssignmentHistory" />
+          <NavigationProperty Name="TaskNodes" Relationship="Self.FK_TaskNode_Task" FromRole="Task" ToRole="TaskNode" />
+        </EntityType>
+        <EntityType Name="TaskAssignment">
+          <Key>
+            <PropertyRef Name="TaskId" />
+            <PropertyRef Name="GroupId" />
+          </Key>
+          <Property Name="TaskId" Type="Int32" Nullable="false" />
+          <Property Name="DateAssigned" Type="DateTime" Precision="3" />
+          <Property Name="GroupId" Type="Int32" Nullable="false" />
+          <Property Name="AccessType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NodeId" Type="Int32" />
+          <NavigationProperty Name="SysGroup" Relationship="Self.FK_TaskAssignment_Group" FromRole="TaskAssignment" ToRole="SysGroup" />
+          <NavigationProperty Name="Task" Relationship="Self.FK_TaskAssignment_Task" FromRole="TaskAssignment" ToRole="Task" />
+        </EntityType>
+        <EntityType Name="TaskAssignmentHistory">
+          <Key>
+            <PropertyRef Name="TaskAssignmentHistoryId" />
+          </Key>
+          <Property Name="TaskId" Type="Int32" />
+          <Property Name="GroupId" Type="Int32" />
+          <Property Name="NodeId" Type="Int32" />
+          <Property Name="DateUpdated" Type="DateTime" Precision="3" />
+          <Property Name="Outcome" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TaskAssignmentHistoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ApproverId" Type="Int32" />
+          <Property Name="ConditionTest" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Node" Relationship="Self.FK_TaskAssignmentHistory_Node" FromRole="TaskAssignmentHistory" ToRole="Node" />
+          <NavigationProperty Name="SysGroup" Relationship="Self.FK_TaskAssignmentHistory_SysGroup" FromRole="TaskAssignmentHistory" ToRole="SysGroup" />
+          <NavigationProperty Name="Task" Relationship="Self.FK_TaskAssignmentHistory_Task" FromRole="TaskAssignmentHistory" ToRole="Task" />
+        </EntityType>
+        <EntityType Name="TaskNode">
+          <Key>
+            <PropertyRef Name="TaskNodeId" />
+          </Key>
+          <Property Name="TaskId" Type="Int32" Nullable="false" />
+          <Property Name="NodeId" Type="Int32" Nullable="false" />
+          <Property Name="DateUpdated" Type="DateTime" Precision="0" />
+          <Property Name="GroupId" Type="Int32" />
+          <Property Name="TaskNodeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Node" Relationship="Self.FK_TaskNode_Node" FromRole="TaskNode" ToRole="Node" />
+          <NavigationProperty Name="Task" Relationship="Self.FK_TaskNode_Task" FromRole="TaskNode" ToRole="Task" />
+        </EntityType>
+        <EntityType Name="UserGroup">
+          <Key>
+            <PropertyRef Name="GroupId" />
+            <PropertyRef Name="PersonId" />
+            <PropertyRef Name="DateUpdated" />
+          </Key>
+          <Property Name="GroupId" Type="Int32" Nullable="false" />
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <Property Name="DateUpdated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Enabled" Type="Int32" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="SysGroup" Relationship="Self.FK_UserGroup_Group" FromRole="UserGroup" ToRole="SysGroup" />
+          <NavigationProperty Name="User" Relationship="Self.FK_UserGroup_Users" FromRole="UserGroup" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="UserPwdHistory">
+          <Key>
+            <PropertyRef Name="PersonId" />
+            <PropertyRef Name="DateUpdated" />
+          </Key>
+          <Property Name="PersonId" Type="Int32" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Salt" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateUpdated" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="User" Relationship="Self.FK_UserPwdHistory_Users" FromRole="UserPwdHistory" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="PersonId" />
+          </Key>
+          <Property Name="PersonId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Enabled" Type="Int32" />
+          <Property Name="LoginId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="DelegateTaskAssignments" Relationship="Self.FK_DelegateTaskAssignment_Users" FromRole="Users" ToRole="DelegateTaskAssignment" />
+          <NavigationProperty Name="PersonDelegates" Relationship="Self.FK_PersonDelegate_Users" FromRole="Users" ToRole="PersonDelegate" />
+          <NavigationProperty Name="PersonDelegates1" Relationship="Self.FK_PersonDelegate_Users1" FromRole="Users" ToRole="PersonDelegate" />
+          <NavigationProperty Name="SystemUsers" Relationship="Self.FK_SystemUser_Users" FromRole="Users" ToRole="SystemUser" />
+          <NavigationProperty Name="UserGroups" Relationship="Self.FK_UserGroup_Users" FromRole="Users" ToRole="UserGroup" />
+          <NavigationProperty Name="UserPwdHistories" Relationship="Self.FK_UserPwdHistory_Users" FromRole="Users" ToRole="UserPwdHistory" />
+        </EntityType>
+        <Association Name="FK_ApprovalProcessTypes_Company">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="ApprovalProcessTypes" Type="Self.ApprovalProcessType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="CompanyId" />
+            </Principal>
+            <Dependent Role="ApprovalProcessTypes">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ApprovalProcessTypes_Function">
+          <End Role="CorpFunction" Type="Self.CorpFunction" Multiplicity="0..1" />
+          <End Role="ApprovalProcessTypes" Type="Self.ApprovalProcessType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CorpFunction">
+              <PropertyRef Name="FunctionId" />
+            </Principal>
+            <Dependent Role="ApprovalProcessTypes">
+              <PropertyRef Name="FunctionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ApprovalProcessTypes_Node">
+          <End Role="Node" Type="Self.Node" Multiplicity="0..1" />
+          <End Role="ApprovalProcessTypes" Type="Self.ApprovalProcessType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Node">
+              <PropertyRef Name="NodeId" />
+            </Principal>
+            <Dependent Role="ApprovalProcessTypes">
+              <PropertyRef Name="StartNodeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ApprovalProcessTypes_Product">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="ApprovalProcessTypes" Type="Self.ApprovalProcessType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="ApprovalProcessTypes">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ApprovalProcessTypes_Region">
+          <End Role="Region" Type="Self.Region" Multiplicity="0..1" />
+          <End Role="ApprovalProcessTypes" Type="Self.ApprovalProcessType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Region">
+              <PropertyRef Name="RegionId" />
+            </Principal>
+            <Dependent Role="ApprovalProcessTypes">
+              <PropertyRef Name="RegionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GroupRoleRelation_ApprovalProcessTypes">
+          <End Role="ApprovalProcessTypes" Type="Self.ApprovalProcessType" Multiplicity="0..1" />
+          <End Role="GroupRoleRelation" Type="Self.GroupRoleRelation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ApprovalProcessTypes">
+              <PropertyRef Name="ApprovalProcessId" />
+            </Principal>
+            <Dependent Role="GroupRoleRelation">
+              <PropertyRef Name="ApprovalProcessId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BranchNode_BranchCondition">
+          <End Role="BranchCondition" Type="Self.BranchCondition" Multiplicity="1" />
+          <End Role="BranchNode" Type="Self.BranchNode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BranchCondition">
+              <PropertyRef Name="ConditionId" />
+            </Principal>
+            <Dependent Role="BranchNode">
+              <PropertyRef Name="ConditionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BranchNode_Node">
+          <End Role="Node" Type="Self.Node" Multiplicity="0..1" />
+          <End Role="BranchNode" Type="Self.BranchNode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Node">
+              <PropertyRef Name="NodeId" />
+            </Principal>
+            <Dependent Role="BranchNode">
+              <PropertyRef Name="OutputNodeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BranchNode_Node1">
+          <End Role="Node" Type="Self.Node" Multiplicity="1" />
+          <End Role="BranchNode" Type="Self.BranchNode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Node">
+              <PropertyRef Name="NodeId" />
+            </Principal>
+            <Dependent Role="BranchNode">
+              <PropertyRef Name="NodeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SysGroup_Company">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="SysGroup" Type="Self.SysGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="CompanyId" />
+            </Principal>
+            <Dependent Role="SysGroup">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Group_Function">
+          <End Role="CorpFunction" Type="Self.CorpFunction" Multiplicity="0..1" />
+          <End Role="SysGroup" Type="Self.SysGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CorpFunction">
+              <PropertyRef Name="FunctionId" />
+            </Principal>
+            <Dependent Role="SysGroup">
+              <PropertyRef Name="FunctionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_Function">
+          <End Role="CorpFunction" Type="Self.CorpFunction" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CorpFunction">
+              <PropertyRef Name="FunctionId" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="FunctionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DelegateTaskAssignment_Task">
+          <End Role="Task" Type="ReviewProjectModel.ReviewTask" Multiplicity="1" />
+          <End Role="DelegateTaskAssignment" Type="Self.DelegateTaskAssignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="TaskId" />
+            </Principal>
+            <Dependent Role="DelegateTaskAssignment">
+              <PropertyRef Name="TaskId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DelegateTaskAssignment_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="DelegateTaskAssignment" Type="Self.DelegateTaskAssignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="DelegateTaskAssignment">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GroupRelation_RelationType">
+          <End Role="RelationType" Type="Self.RelationType" Multiplicity="1" />
+          <End Role="GroupRoleRelation" Type="Self.GroupRoleRelation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RelationType">
+              <PropertyRef Name="RelationTypeId" />
+            </Principal>
+            <Dependent Role="GroupRoleRelation">
+              <PropertyRef Name="RelationTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MasterGroupRoleRelation_SysGroup">
+          <End Role="SysGroup" Type="Self.SysGroup" Multiplicity="0..1" />
+          <End Role="GroupRoleRelation" Type="Self.GroupRoleRelation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SysGroup">
+              <PropertyRef Name="GroupId" />
+            </Principal>
+            <Dependent Role="GroupRoleRelation">
+              <PropertyRef Name="MasterGroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelativeGroupRoleRelation_SysGroup">
+          <End Role="SysGroup" Type="Self.SysGroup" Multiplicity="0..1" />
+          <End Role="GroupRoleRelation" Type="Self.GroupRoleRelation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SysGroup">
+              <PropertyRef Name="GroupId" />
+            </Principal>
+            <Dependent Role="GroupRoleRelation">
+              <PropertyRef Name="RelativeGroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SystemUser_System">
+          <End Role="ITSystem" Type="Self.ITSystem" Multiplicity="1" />
+          <End Role="SystemUser" Type="Self.SystemUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ITSystem">
+              <PropertyRef Name="SystemId" />
+            </Principal>
+            <Dependent Role="SystemUser">
+              <PropertyRef Name="SystemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TaskAssignmentHistory_Node">
+          <End Role="Node" Type="Self.Node" Multiplicity="0..1" />
+          <End Role="TaskAssignmentHistory" Type="Self.TaskAssignmentHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Node">
+              <PropertyRef Name="NodeId" />
+            </Principal>
+            <Dependent Role="TaskAssignmentHistory">
+              <PropertyRef Name="NodeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TaskNode_Node">
+          <End Role="Node" Type="Self.Node" Multiplicity="1" />
+          <End Role="TaskNode" Type="Self.TaskNode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Node">
+              <PropertyRef Name="NodeId" />
+            </Principal>
+            <Dependent Role="TaskNode">
+              <PropertyRef Name="NodeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersonDelegate_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="PersonDelegate" Type="Self.PersonDelegate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="PersonDelegate">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PersonDelegate_Users1">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="PersonDelegate" Type="Self.PersonDelegate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="PersonDelegate">
+              <PropertyRef Name="DelegateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Group_Product">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="SysGroup" Type="Self.SysGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="SysGroup">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Region_Product">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="Region" Type="Self.Region" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="Region">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationType_RelationType">
+          <End Role="RelationType" Type="Self.RelationType" Multiplicity="0..1" />
+          <End Role="RelationType1" Type="Self.RelationType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RelationType">
+              <PropertyRef Name="RelationTypeId" />
+            </Principal>
+            <Dependent Role="RelationType1">
+              <PropertyRef Name="InverseRelationTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TaskAssignment_Group">
+          <End Role="SysGroup" Type="Self.SysGroup" Multiplicity="1" />
+          <End Role="TaskAssignment" Type="Self.TaskAssignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SysGroup">
+              <PropertyRef Name="GroupId" />
+            </Principal>
+            <Dependent Role="TaskAssignment">
+              <PropertyRef Name="GroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TaskAssignmentHistory_SysGroup">
+          <End Role="SysGroup" Type="Self.SysGroup" Multiplicity="0..1" />
+          <End Role="TaskAssignmentHistory" Type="Self.TaskAssignmentHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SysGroup">
+              <PropertyRef Name="GroupId" />
+            </Principal>
+            <Dependent Role="TaskAssignmentHistory">
+              <PropertyRef Name="GroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserGroup_Group">
+          <End Role="SysGroup" Type="Self.SysGroup" Multiplicity="1" />
+          <End Role="UserGroup" Type="Self.UserGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SysGroup">
+              <PropertyRef Name="GroupId" />
+            </Principal>
+            <Dependent Role="UserGroup">
+              <PropertyRef Name="GroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SystemUser_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="SystemUser" Type="Self.SystemUser" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="SystemUser">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TaskAssignment_Task">
+          <End Role="Task" Type="ReviewProjectModel.ReviewTask" Multiplicity="1" />
+          <End Role="TaskAssignment" Type="Self.TaskAssignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="TaskId" />
+            </Principal>
+            <Dependent Role="TaskAssignment">
+              <PropertyRef Name="TaskId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TaskAssignmentHistory_Task">
+          <End Role="Task" Type="ReviewProjectModel.ReviewTask" Multiplicity="0..1" />
+          <End Role="TaskAssignmentHistory" Type="Self.TaskAssignmentHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="TaskId" />
+            </Principal>
+            <Dependent Role="TaskAssignmentHistory">
+              <PropertyRef Name="TaskId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TaskNode_Task">
+          <End Role="Task" Type="ReviewProjectModel.ReviewTask" Multiplicity="1" />
+          <End Role="TaskNode" Type="Self.TaskNode" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="TaskId" />
+            </Principal>
+            <Dependent Role="TaskNode">
+              <PropertyRef Name="TaskId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserGroup_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="UserGroup" Type="Self.UserGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="UserGroup">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserPwdHistory_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="UserPwdHistory" Type="Self.UserPwdHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="PersonId" />
+            </Principal>
+            <Dependent Role="UserPwdHistory">
+              <PropertyRef Name="PersonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ReviewProjectEntities2" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AccessTypes" EntityType="Self.AccessType" />
+          <EntitySet Name="ApprovalProcessTypes" EntityType="Self.ApprovalProcessType" />
+          <EntitySet Name="Audit_Log" EntityType="Self.Audit_Log" />
+          <EntitySet Name="AuditDefinitions" EntityType="Self.AuditDefinition" />
+          <EntitySet Name="BranchConditions" EntityType="Self.BranchCondition" />
+          <EntitySet Name="BranchNodes" EntityType="Self.BranchNode" />
+          <EntitySet Name="Companies" EntityType="Self.Company" />
+          <EntitySet Name="CorpFunctions" EntityType="Self.CorpFunction" />
+          <EntitySet Name="DelegateTaskAssignments" EntityType="Self.DelegateTaskAssignment" />
+          <EntitySet Name="GroupRoleRelations" EntityType="Self.GroupRoleRelation" />
+          <EntitySet Name="ITSystems" EntityType="Self.ITSystem" />
+          <EntitySet Name="Nodes" EntityType="Self.Node" />
+          <EntitySet Name="PersonDelegates" EntityType="Self.PersonDelegate" />
+          <EntitySet Name="Products" EntityType="Self.Product" />
+          <EntitySet Name="Regions" EntityType="Self.Region" />
+          <EntitySet Name="RelationTypes" EntityType="Self.RelationType" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="SysGroups" EntityType="Self.SysGroup" />
+          <EntitySet Name="SystemUsers" EntityType="Self.SystemUser" />
+          <EntitySet Name="ReviewTasks" EntityType="ReviewProjectModel.ReviewTask" />
+          <EntitySet Name="TaskAssignments" EntityType="Self.TaskAssignment" />
+          <EntitySet Name="TaskAssignmentHistories" EntityType="Self.TaskAssignmentHistory" />
+          <EntitySet Name="TaskNodes" EntityType="Self.TaskNode" />
+          <EntitySet Name="UserGroups" EntityType="Self.UserGroup" />
+          <EntitySet Name="UserPwdHistories" EntityType="Self.UserPwdHistory" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK_ApprovalProcessTypes_Company" Association="Self.FK_ApprovalProcessTypes_Company">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="ApprovalProcessTypes" EntitySet="ApprovalProcessTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ApprovalProcessTypes_Function" Association="Self.FK_ApprovalProcessTypes_Function">
+            <End Role="CorpFunction" EntitySet="CorpFunctions" />
+            <End Role="ApprovalProcessTypes" EntitySet="ApprovalProcessTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ApprovalProcessTypes_Node" Association="Self.FK_ApprovalProcessTypes_Node">
+            <End Role="Node" EntitySet="Nodes" />
+            <End Role="ApprovalProcessTypes" EntitySet="ApprovalProcessTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ApprovalProcessTypes_Product" Association="Self.FK_ApprovalProcessTypes_Product">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="ApprovalProcessTypes" EntitySet="ApprovalProcessTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ApprovalProcessTypes_Region" Association="Self.FK_ApprovalProcessTypes_Region">
+            <End Role="Region" EntitySet="Regions" />
+            <End Role="ApprovalProcessTypes" EntitySet="ApprovalProcessTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GroupRoleRelation_ApprovalProcessTypes" Association="Self.FK_GroupRoleRelation_ApprovalProcessTypes">
+            <End Role="ApprovalProcessTypes" EntitySet="ApprovalProcessTypes" />
+            <End Role="GroupRoleRelation" EntitySet="GroupRoleRelations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BranchNode_BranchCondition" Association="Self.FK_BranchNode_BranchCondition">
+            <End Role="BranchCondition" EntitySet="BranchConditions" />
+            <End Role="BranchNode" EntitySet="BranchNodes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BranchNode_Node" Association="Self.FK_BranchNode_Node">
+            <End Role="Node" EntitySet="Nodes" />
+            <End Role="BranchNode" EntitySet="BranchNodes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BranchNode_Node1" Association="Self.FK_BranchNode_Node1">
+            <End Role="Node" EntitySet="Nodes" />
+            <End Role="BranchNode" EntitySet="BranchNodes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SysGroup_Company" Association="Self.FK_SysGroup_Company">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="SysGroup" EntitySet="SysGroups" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Group_Function" Association="Self.FK_Group_Function">
+            <End Role="CorpFunction" EntitySet="CorpFunctions" />
+            <End Role="SysGroup" EntitySet="SysGroups" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_Function" Association="Self.FK_Product_Function">
+            <End Role="CorpFunction" EntitySet="CorpFunctions" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DelegateTaskAssignment_Task" Association="Self.FK_DelegateTaskAssignment_Task">
+            <End Role="Task" EntitySet="ReviewTasks" />
+            <End Role="DelegateTaskAssignment" EntitySet="DelegateTaskAssignments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DelegateTaskAssignment_Users" Association="Self.FK_DelegateTaskAssignment_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="DelegateTaskAssignment" EntitySet="DelegateTaskAssignments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GroupRelation_RelationType" Association="Self.FK_GroupRelation_RelationType">
+            <End Role="RelationType" EntitySet="RelationTypes" />
+            <End Role="GroupRoleRelation" EntitySet="GroupRoleRelations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MasterGroupRoleRelation_SysGroup" Association="Self.FK_MasterGroupRoleRelation_SysGroup">
+            <End Role="SysGroup" EntitySet="SysGroups" />
+            <End Role="GroupRoleRelation" EntitySet="GroupRoleRelations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelativeGroupRoleRelation_SysGroup" Association="Self.FK_RelativeGroupRoleRelation_SysGroup">
+            <End Role="SysGroup" EntitySet="SysGroups" />
+            <End Role="GroupRoleRelation" EntitySet="GroupRoleRelations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SystemUser_System" Association="Self.FK_SystemUser_System">
+            <End Role="ITSystem" EntitySet="ITSystems" />
+            <End Role="SystemUser" EntitySet="SystemUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TaskAssignmentHistory_Node" Association="Self.FK_TaskAssignmentHistory_Node">
+            <End Role="Node" EntitySet="Nodes" />
+            <End Role="TaskAssignmentHistory" EntitySet="TaskAssignmentHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TaskNode_Node" Association="Self.FK_TaskNode_Node">
+            <End Role="Node" EntitySet="Nodes" />
+            <End Role="TaskNode" EntitySet="TaskNodes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonDelegate_Users" Association="Self.FK_PersonDelegate_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="PersonDelegate" EntitySet="PersonDelegates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PersonDelegate_Users1" Association="Self.FK_PersonDelegate_Users1">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="PersonDelegate" EntitySet="PersonDelegates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Group_Product" Association="Self.FK_Group_Product">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="SysGroup" EntitySet="SysGroups" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Region_Product" Association="Self.FK_Region_Product">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="Region" EntitySet="Regions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationType_RelationType" Association="Self.FK_RelationType_RelationType">
+            <End Role="RelationType" EntitySet="RelationTypes" />
+            <End Role="RelationType1" EntitySet="RelationTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TaskAssignment_Group" Association="Self.FK_TaskAssignment_Group">
+            <End Role="SysGroup" EntitySet="SysGroups" />
+            <End Role="TaskAssignment" EntitySet="TaskAssignments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TaskAssignmentHistory_SysGroup" Association="Self.FK_TaskAssignmentHistory_SysGroup">
+            <End Role="SysGroup" EntitySet="SysGroups" />
+            <End Role="TaskAssignmentHistory" EntitySet="TaskAssignmentHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserGroup_Group" Association="Self.FK_UserGroup_Group">
+            <End Role="SysGroup" EntitySet="SysGroups" />
+            <End Role="UserGroup" EntitySet="UserGroups" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SystemUser_Users" Association="Self.FK_SystemUser_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="SystemUser" EntitySet="SystemUsers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TaskAssignment_Task" Association="Self.FK_TaskAssignment_Task">
+            <End Role="Task" EntitySet="ReviewTasks" />
+            <End Role="TaskAssignment" EntitySet="TaskAssignments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TaskAssignmentHistory_Task" Association="Self.FK_TaskAssignmentHistory_Task">
+            <End Role="Task" EntitySet="ReviewTasks" />
+            <End Role="TaskAssignmentHistory" EntitySet="TaskAssignmentHistories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TaskNode_Task" Association="Self.FK_TaskNode_Task">
+            <End Role="Task" EntitySet="ReviewTasks" />
+            <End Role="TaskNode" EntitySet="TaskNodes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserGroup_Users" Association="Self.FK_UserGroup_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserGroup" EntitySet="UserGroups" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserPwdHistory_Users" Association="Self.FK_UserPwdHistory_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UserPwdHistory" EntitySet="UserPwdHistories" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ReviewProjectModelStoreContainer" CdmEntityContainer="ReviewProjectEntities2">
+          <EntitySetMapping Name="AccessTypes">
+            <EntityTypeMapping TypeName="ReviewProjectModel.AccessType">
+              <MappingFragment StoreEntitySet="AccessType">
+                <ScalarProperty Name="AccessTypeId" ColumnName="AccessTypeId" />
+                <ScalarProperty Name="AccessDescription" ColumnName="AccessDescription" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ApprovalProcessTypes">
+            <EntityTypeMapping TypeName="ReviewProjectModel.ApprovalProcessType">
+              <MappingFragment StoreEntitySet="ApprovalProcessTypes">
+                <ScalarProperty Name="ApprovalProcessId" ColumnName="ApprovalProcessId" />
+                <ScalarProperty Name="StartNodeId" ColumnName="StartNodeId" />
+                <ScalarProperty Name="ApprovalType" ColumnName="ApprovalType" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="FunctionId" ColumnName="FunctionId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="RegionId" ColumnName="RegionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Audit_Log">
+            <EntityTypeMapping TypeName="ReviewProjectModel.Audit_Log">
+              <MappingFragment StoreEntitySet="Audit_Log">
+                <ScalarProperty Name="AuditId" ColumnName="AuditId" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="DelegateId" ColumnName="DelegateId" />
+                <ScalarProperty Name="TableName" ColumnName="TableName" />
+                <ScalarProperty Name="ColumnName" ColumnName="ColumnName" />
+                <ScalarProperty Name="AuditedAction" ColumnName="AuditedAction" />
+                <ScalarProperty Name="AuditCriteria" ColumnName="AuditCriteria" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AuditDefinitions">
+            <EntityTypeMapping TypeName="ReviewProjectModel.AuditDefinition">
+              <MappingFragment StoreEntitySet="AuditDefinition">
+                <ScalarProperty Name="AuditDefinitionId" ColumnName="AuditDefinitionId" />
+                <ScalarProperty Name="TableName" ColumnName="TableName" />
+                <ScalarProperty Name="ColumnName" ColumnName="ColumnName" />
+                <ScalarProperty Name="AuditOn" ColumnName="AuditOn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BranchConditions">
+            <EntityTypeMapping TypeName="ReviewProjectModel.BranchCondition">
+              <MappingFragment StoreEntitySet="BranchCondition">
+                <ScalarProperty Name="ConditionId" ColumnName="ConditionId" />
+                <ScalarProperty Name="ConditionTest" ColumnName="ConditionTest" />
+                <ScalarProperty Name="ConditionDescription" ColumnName="ConditionDescription" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BranchNodes">
+            <EntityTypeMapping TypeName="ReviewProjectModel.BranchNode">
+              <MappingFragment StoreEntitySet="BranchNode">
+                <ScalarProperty Name="GuardId" ColumnName="GuardId" />
+                <ScalarProperty Name="NodeId" ColumnName="NodeId" />
+                <ScalarProperty Name="OutputNodeId" ColumnName="OutputNodeId" />
+                <ScalarProperty Name="ConditionId" ColumnName="ConditionId" />
+                <ScalarProperty Name="RelationTypeId" ColumnName="RelationTypeId" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="AccessType" ColumnName="AccessType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Companies">
+            <EntityTypeMapping TypeName="ReviewProjectModel.Company">
+              <MappingFragment StoreEntitySet="Company">
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CorpFunctions">
+            <EntityTypeMapping TypeName="ReviewProjectModel.CorpFunction">
+              <MappingFragment StoreEntitySet="CorpFunction">
+                <ScalarProperty Name="FunctionId" ColumnName="FunctionId" />
+                <ScalarProperty Name="FunctionName" ColumnName="FunctionName" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DelegateTaskAssignments">
+            <EntityTypeMapping TypeName="ReviewProjectModel.DelegateTaskAssignment">
+              <MappingFragment StoreEntitySet="DelegateTaskAssignment">
+                <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="DelegateId" ColumnName="DelegateId" />
+                <ScalarProperty Name="DateAssigned" ColumnName="DateAssigned" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GroupRoleRelations">
+            <EntityTypeMapping TypeName="ReviewProjectModel.GroupRoleRelation">
+              <MappingFragment StoreEntitySet="GroupRoleRelation">
+                <ScalarProperty Name="GroupRelationId" ColumnName="GroupRelationId" />
+                <ScalarProperty Name="MasterGroupId" ColumnName="MasterGroupId" />
+                <ScalarProperty Name="RelativeGroupId" ColumnName="RelativeGroupId" />
+                <ScalarProperty Name="DateUpdated" ColumnName="DateUpdated" />
+                <ScalarProperty Name="Enabled" ColumnName="Enabled" />
+                <ScalarProperty Name="RelationTypeId" ColumnName="RelationTypeId" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="ApprovalProcessId" ColumnName="ApprovalProcessId" />
+                <ScalarProperty Name="GroupRoleWeight" ColumnName="GroupRoleWeight" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ITSystems">
+            <EntityTypeMapping TypeName="ReviewProjectModel.ITSystem">
+              <MappingFragment StoreEntitySet="ITSystem">
+                <ScalarProperty Name="SystemId" ColumnName="SystemId" />
+                <ScalarProperty Name="SystemName" ColumnName="SystemName" />
+                <ScalarProperty Name="SystemEndpoint" ColumnName="SystemEndpoint" />
+                <ScalarProperty Name="URL" ColumnName="URL" />
+                <ScalarProperty Name="RedirectURL" ColumnName="RedirectURL" />
+                <ScalarProperty Name="SystemHash" ColumnName="SystemHash" />
+                <ScalarProperty Name="SystemToken" ColumnName="SystemToken" />
+                <ScalarProperty Name="SystemSharedSecret" ColumnName="SystemSharedSecret" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Nodes">
+            <EntityTypeMapping TypeName="ReviewProjectModel.Node">
+              <MappingFragment StoreEntitySet="Node">
+                <ScalarProperty Name="NodeId" ColumnName="NodeId" />
+                <ScalarProperty Name="NodeDescription" ColumnName="NodeDescription" />
+                <ScalarProperty Name="NodeType" ColumnName="NodeType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PersonDelegates">
+            <EntityTypeMapping TypeName="ReviewProjectModel.PersonDelegate">
+              <MappingFragment StoreEntitySet="PersonDelegate">
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="DelegateId" ColumnName="DelegateId" />
+                <ScalarProperty Name="DateUpdated" ColumnName="DateUpdated" />
+                <ScalarProperty Name="Enabled" ColumnName="Enabled" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="RelationTypeId" ColumnName="RelationTypeId" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="DelegationId" ColumnName="DelegationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="ReviewProjectModel.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="FunctionId" ColumnName="FunctionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Regions">
+            <EntityTypeMapping TypeName="ReviewProjectModel.Region">
+              <MappingFragment StoreEntitySet="Region">
+                <ScalarProperty Name="RegionId" ColumnName="RegionId" />
+                <ScalarProperty Name="RegionName" ColumnName="RegionName" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RelationTypes">
+            <EntityTypeMapping TypeName="ReviewProjectModel.RelationType">
+              <MappingFragment StoreEntitySet="RelationType">
+                <ScalarProperty Name="RelationTypeId" ColumnName="RelationTypeId" />
+                <ScalarProperty Name="RelationDescription" ColumnName="RelationDescription" />
+                <ScalarProperty Name="Recursive" ColumnName="Recursive" />
+                <ScalarProperty Name="NumberofRecursions" ColumnName="NumberofRecursions" />
+                <ScalarProperty Name="InverseRelationTypeId" ColumnName="InverseRelationTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="ReviewProjectModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SysGroups">
+            <EntityTypeMapping TypeName="ReviewProjectModel.SysGroup">
+              <MappingFragment StoreEntitySet="SysGroup">
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+                <ScalarProperty Name="FunctionId" ColumnName="FunctionId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="RegionId" ColumnName="RegionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SystemUsers">
+            <EntityTypeMapping TypeName="ReviewProjectModel.SystemUser">
+              <MappingFragment StoreEntitySet="SystemUser">
+                <ScalarProperty Name="SystemId" ColumnName="SystemId" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="SystemUserIdentifier" ColumnName="SystemUserIdentifier" />
+                <ScalarProperty Name="SystemUserPassword" ColumnName="SystemUserPassword" />
+                <ScalarProperty Name="SystemHash" ColumnName="SystemHash" />
+                <ScalarProperty Name="SystemSharedSecret" ColumnName="SystemSharedSecret" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReviewTasks">
+            <EntityTypeMapping TypeName="ReviewProjectModel.ReviewTask">
+              <MappingFragment StoreEntitySet="Task">
+                <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+                <ScalarProperty Name="DateUpdated" ColumnName="DateUpdated" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="RaiserUserId" ColumnName="RaiserUserId" />
+                <ScalarProperty Name="ApprovalProcessType" ColumnName="ApprovalProcessType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TaskAssignments">
+            <EntityTypeMapping TypeName="ReviewProjectModel.TaskAssignment">
+              <MappingFragment StoreEntitySet="TaskAssignment">
+                <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+                <ScalarProperty Name="DateAssigned" ColumnName="DateAssigned" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="AccessType" ColumnName="AccessType" />
+                <ScalarProperty Name="NodeId" ColumnName="NodeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TaskAssignmentHistories">
+            <EntityTypeMapping TypeName="ReviewProjectModel.TaskAssignmentHistory">
+              <MappingFragment StoreEntitySet="TaskAssignmentHistory">
+                <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="NodeId" ColumnName="NodeId" />
+                <ScalarProperty Name="DateUpdated" ColumnName="DateUpdated" />
+                <ScalarProperty Name="Outcome" ColumnName="Outcome" />
+                <ScalarProperty Name="TaskAssignmentHistoryId" ColumnName="TaskAssignmentHistoryId" />
+                <ScalarProperty Name="ApproverId" ColumnName="ApproverId" />
+                <ScalarProperty Name="ConditionTest" ColumnName="ConditionTest" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TaskNodes">
+            <EntityTypeMapping TypeName="ReviewProjectModel.TaskNode">
+              <MappingFragment StoreEntitySet="TaskNode">
+                <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+                <ScalarProperty Name="NodeId" ColumnName="NodeId" />
+                <ScalarProperty Name="DateUpdated" ColumnName="DateUpdated" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="TaskNodeId" ColumnName="TaskNodeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserGroups">
+            <EntityTypeMapping TypeName="ReviewProjectModel.UserGroup">
+              <MappingFragment StoreEntitySet="UserGroup">
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="DateUpdated" ColumnName="DateUpdated" />
+                <ScalarProperty Name="Enabled" ColumnName="Enabled" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserPwdHistories">
+            <EntityTypeMapping TypeName="ReviewProjectModel.UserPwdHistory">
+              <MappingFragment StoreEntitySet="UserPwdHistory">
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Salt" ColumnName="Salt" />
+                <ScalarProperty Name="DateUpdated" ColumnName="DateUpdated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="ReviewProjectModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="PersonId" ColumnName="PersonId" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Enabled" ColumnName="Enabled" />
+                <ScalarProperty Name="LoginId" ColumnName="LoginId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

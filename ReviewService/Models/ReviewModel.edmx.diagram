@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="7bc6ec2c4ca443eea3b05f77994849d3" Name="Diagram1">
+        <EntityTypeShape EntityType="ReviewProjectModel.AccessType" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReviewProjectModel.ApprovalProcessType" Width="1.5" PointX="7.5" PointY="11.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReviewProjectModel.Audit_Log" Width="1.5" PointX="2.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReviewProjectModel.AuditDefinition" Width="1.5" PointX="4.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReviewProjectModel.BranchCondition" Width="1.5" PointX="8.25" PointY="19.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReviewProjectModel.BranchNode" Width="1.5" PointX="10.5" PointY="17.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReviewProjectModel.Company" Width="1.5" PointX="3" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReviewProjectModel.CorpFunction" Width="1.5" PointX="0.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReviewProjectModel.DelegateTaskAssignment" Width="1.5" PointX="13.5" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReviewProjectModel.GroupRoleRelation" Width="1.5" PointX="12.75" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReviewProjectModel.ITSystem" Width="1.5" PointX="11.25" PointY="25.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReviewProjectModel.Node" Width="1.5" PointX="8.25" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReviewProjectModel.PersonDelegate" Width="1.5" PointX="10.5" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReviewProjectModel.Product" Width="1.5" PointX="3" PointY="13.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReviewProjectModel.Region" Width="1.5" PointX="5.25" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReviewProjectModel.RelationType" Width="1.5" PointX="10.5" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReviewProjectModel.sysdiagram" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReviewProjectModel.SysGroup" Width="1.5" PointX="5.25" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReviewProjectModel.SystemUser" Width="1.5" PointX="13.5" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReviewProjectModel.ReviewTask" Width="1.5" PointX="5.25" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReviewProjectModel.TaskAssignment" Width="1.5" PointX="7.5" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReviewProjectModel.TaskAssignmentHistory" Width="1.5" PointX="10.5" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReviewProjectModel.TaskNode" Width="1.5" PointX="13.5" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReviewProjectModel.UserGroup" Width="1.5" PointX="10.5" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReviewProjectModel.UserPwdHistory" Width="1.5" PointX="10.5" PointY="22.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReviewProjectModel.User" Width="1.5" PointX="8.25" PointY="3.5" IsExpanded="true" />
+        <AssociationConnector Association="ReviewProjectModel.FK_ApprovalProcessTypes_Company" ManuallyRouted="false" />
+        <AssociationConnector Association="ReviewProjectModel.FK_ApprovalProcessTypes_Function" ManuallyRouted="false" />
+        <AssociationConnector Association="ReviewProjectModel.FK_ApprovalProcessTypes_Node" ManuallyRouted="false" />
+        <AssociationConnector Association="ReviewProjectModel.FK_ApprovalProcessTypes_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="ReviewProjectModel.FK_ApprovalProcessTypes_Region" ManuallyRouted="false" />
+        <AssociationConnector Association="ReviewProjectModel.FK_GroupRoleRelation_ApprovalProcessTypes" ManuallyRouted="false" />
+        <AssociationConnector Association="ReviewProjectModel.FK_BranchNode_BranchCondition" ManuallyRouted="false" />
+        <AssociationConnector Association="ReviewProjectModel.FK_BranchNode_Node" ManuallyRouted="false" />
+        <AssociationConnector Association="ReviewProjectModel.FK_BranchNode_Node1" ManuallyRouted="false" />
+        <AssociationConnector Association="ReviewProjectModel.FK_SysGroup_Company" ManuallyRouted="false" />
+        <AssociationConnector Association="ReviewProjectModel.FK_Group_Function" ManuallyRouted="false" />
+        <AssociationConnector Association="ReviewProjectModel.FK_Product_Function" ManuallyRouted="false" />
+        <AssociationConnector Association="ReviewProjectModel.FK_DelegateTaskAssignment_Task" ManuallyRouted="false" />
+        <AssociationConnector Association="ReviewProjectModel.FK_DelegateTaskAssignment_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="ReviewProjectModel.FK_GroupRelation_RelationType" ManuallyRouted="false" />
+        <AssociationConnector Association="ReviewProjectModel.FK_MasterGroupRoleRelation_SysGroup" ManuallyRouted="false" />
+        <AssociationConnector Association="ReviewProjectModel.FK_RelativeGroupRoleRelation_SysGroup" ManuallyRouted="false" />
+        <AssociationConnector Association="ReviewProjectModel.FK_SystemUser_System" ManuallyRouted="false" />
+        <AssociationConnector Association="ReviewProjectModel.FK_TaskAssignmentHistory_Node" ManuallyRouted="false" />
+        <AssociationConnector Association="ReviewProjectModel.FK_TaskNode_Node" ManuallyRouted="false" />
+        <AssociationConnector Association="ReviewProjectModel.FK_PersonDelegate_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="ReviewProjectModel.FK_PersonDelegate_Users1" ManuallyRouted="false" />
+        <AssociationConnector Association="ReviewProjectModel.FK_Group_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="ReviewProjectModel.FK_Region_Product" ManuallyRouted="false" />
+        <AssociationConnector Association="ReviewProjectModel.FK_RelationType_RelationType" ManuallyRouted="false" />
+        <AssociationConnector Association="ReviewProjectModel.FK_TaskAssignment_Group" ManuallyRouted="false" />
+        <AssociationConnector Association="ReviewProjectModel.FK_TaskAssignmentHistory_SysGroup" ManuallyRouted="false" />
+        <AssociationConnector Association="ReviewProjectModel.FK_UserGroup_Group" ManuallyRouted="false" />
+        <AssociationConnector Association="ReviewProjectModel.FK_SystemUser_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="ReviewProjectModel.FK_TaskAssignment_Task" ManuallyRouted="false" />
+        <AssociationConnector Association="ReviewProjectModel.FK_TaskAssignmentHistory_Task" ManuallyRouted="false" />
+        <AssociationConnector Association="ReviewProjectModel.FK_TaskNode_Task" ManuallyRouted="false" />
+        <AssociationConnector Association="ReviewProjectModel.FK_UserGroup_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="ReviewProjectModel.FK_UserPwdHistory_Users" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
