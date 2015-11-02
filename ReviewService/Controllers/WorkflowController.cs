@@ -27,20 +27,35 @@ namespace ReviewService.Controllers
             int StartNodeId;
             int NodeId;
             int AccessType;
+            int RelationType;
+            int RelativeGroupId;                //This will need to be an array in later iterations, to allow for multiple branches
+            String StartNodeText = "Start";
 
             ApprovalProcessType TypeDefinition;
             BranchNode NodeDef;
+            GroupRoleRelation GroupRels;
+            TaskAssignment TA;
+            TaskNode TN;
+            ReviewTask reviewTask;          //Can't be called Task as that causes interesting things to happen since .net defines a Task type already
 
             //Get Start Node for this Workflow Process Type
             TypeDefinition = db.ApprovalProcessTypes.FirstOrDefault(a => a.ApprovalProcessId.Equals(ApprovalProcessId));
             StartNodeId = (int)TypeDefinition.StartNodeId;
             //Get Relationship to use to send this Node off for approval 
-            NodeDef = db.BranchNodes.FirstOrDefault(a => a.NodeId.Equals(StartNodeId));
+            NodeDef = db.BranchNodes.FirstOrDefault(a => a.NodeId.Equals(StartNodeId)  && a.Type.Equals(StartNodeText));
+            //Note forcing one row returned from NodeDef 
             NodeId = NodeDef.NodeId;
+            AccessType = (int)NodeDef.AccessType;
+            RelationType = NodeDef.RelationTypeId;
+            //Just done one group for demonstration purposes
+            GroupRels = db.GroupRoleRelations.FirstOrDefault(a => a.ApprovalProcessId.Equals(ApprovalProcessId) && a.MasterGroupId.Equals(MasterGroupId) );
+            RelativeGroupId = (int)GroupRels.RelativeGroupId;
 
 
+            reviewTask = new ReviewTask();
+            TA = new TaskAssignment();
+            TN = new TaskNode();
 
-            ReviewTask reviewTask = new ReviewTask();
 
             reviewTask.ApprovalProcessType = ApprovalProcessId;
             reviewTask.RaiserUserId = RaiserUserId;
@@ -48,39 +63,23 @@ namespace ReviewService.Controllers
             reviewTask.DateUpdated = System.DateTime.Today;
 
             db.ReviewTasks.Add(reviewTask);
+            db.SaveChanges();
 
-            /*
+            TA.AccessType = AccessType.ToString();
+            TA.DateAssigned = System.DateTime.Today;
+            TA.GroupId = RelativeGroupId;
+            TA.TaskId = reviewTask.TaskId;
+            TA.NodeId = NodeId;
+            db.TaskAssignments.Add(TA);
 
-            Select StartNodeId from ApprovalProcessTypes where ApprovalProcessId = '3'   -- 3,4,5,6  Sequential, Hierarchical, Voting, Unanimous
---1
-insert into Task(DateUpdated, Status, RaiserUserId, ApprovalProcessType) values(getdate(), 'I', 1, 3)
---Check code
-select * from TASK where DateUpdated > dateadd(d, -1, getdate())
---Task Id = 1 (not got a group yet)
-select BranchNode.RelationTypeId, BranchNode.AccessType from BranchNode where 
-NodeId = 1
-and Type='Start'
-
---1, 1
---For each node returned get relation
-select RelativeGroupId from GroupRoleRelation where 
-	ApprovalProcessId = 3 AND
-	MasterGroupId IN (1) AND -- My group
-	RelationTypeId  = 1   --From BrachNode
-
---2
---Access Type still 1, NodeId still 1
---Iterative in code for each group
-	insert into TaskAssignment (TaskId, DateAssigned, GroupId, AccessType, NodeId) 
-								VALUES(1, getdate(), 2, 1, 1)
-	insert into TaskNode(TaskId, NodeId, DateUpdated, GroupId) values(1, 1, GETDATE(), 2)
-
-
-
-    */
-
+            TN.NodeId = NodeId;
+            TN.GroupId = RelativeGroupId;
+            TN.TaskId = reviewTask.TaskId;
+            TN.DateUpdated = System.DateTime.Today;
+            db.TaskNodes.Add(TN);
 
             db.SaveChanges();
+
         }
 
     }
