@@ -50,7 +50,7 @@ namespace ReviewService.Controllers
             //Just done one group for demonstration purposes
             //&& a.RelationTypeId.Equals(RelationType)
             //Has value
-            GroupRels = db.GroupRoleRelations.FirstOrDefault(a => a.ApprovalProcessId ==ApprovalProcessId && a.MasterGroupId == MasterGroupId );
+            GroupRels = db.GroupRoleRelations.FirstOrDefault(a => a.ApprovalProcessId ==ApprovalProcessId && a.MasterGroupId == MasterGroupId && a.RelationTypeId.Equals(RelationType));
             RelativeGroupId = (int)GroupRels.RelativeGroupId;
 
 
