@@ -18,7 +18,6 @@ namespace ReviewService.Models
         public ReviewProjectEntities2()
             : base("name=ReviewProjectEntities2")
         {
-            base.Configuration.ProxyCreationEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

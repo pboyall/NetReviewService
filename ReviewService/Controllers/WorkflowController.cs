@@ -7,7 +7,6 @@ using System.Web.Http;
 using ReviewService.Models;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
-using System.Web.Http;
 using System.Web.Http.Description;
 namespace ReviewService.Controllers
 {
@@ -82,6 +81,8 @@ namespace ReviewService.Controllers
 
             db.SaveChanges();
 
+            //Should really return a success/fail indicator here
+
         }
 
     }
@@ -104,8 +105,7 @@ namespace ReviewService.Controllers
 
         // POST api/<controller>
         // Create a new workflow for the given Approval Process and User ID
-        //No response type yet
-        [ResponseType(typeof(ReviewTask))]
+        [ResponseType(typeof(workflow))]
         public IHttpActionResult Post([FromBody]workflow wf)
         {
             //Initialise Workflow
@@ -117,7 +117,7 @@ namespace ReviewService.Controllers
             }
 
             wf.InitialiseWorkflow();
-
+            //Am returning the wrong type!
             return CreatedAtRoute("DefaultApi", new { id = wf.ApprovalProcessId }, wf);
 
         }
