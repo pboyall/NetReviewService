@@ -45,8 +45,15 @@ namespace ReviewService.Controllers
             return (int)userGroup.GroupId;
         }
         //Made public while working on it
-        public TaskAssignment getTaskAssignment(int GroupId)
+        public TaskAssignment getTaskAssignment(int GroupId, int TaskId)
         {
+            //"Select A.TaskId, A.AccessType, A.GroupId 
+            //from TaskAssignment A 
+            //Join Task T 
+            //on T.TaskId = A.TaskId 
+            //and Status <> 'Closed' 
+            //where GroupId in (2) and TaskId = TaskId "
+            //--1
             ApprovalProcessType TypeDefinition;
             BranchNode NodeDef;
             GroupRoleRelation GroupRels;
@@ -57,21 +64,6 @@ namespace ReviewService.Controllers
             TA = new TaskAssignment();
             db.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
 
-            //reviewTask = db.ReviewTasks.Where(r => r.TaskAssignments.Any(ta => ta.TaskId == TaskId && ta.GroupId == GroupId && r.Status != "Closed")).FirstOrDefault();
-            /*
-                        var TaskAssignments1 = from tas in db.TaskAssignments
-                                              where tas.TaskId == TaskId
-                                              select new
-                                              {
-                                                  TId = tas.TaskId,
-                                                  AT = tas.AccessType,
-                                                  Grp = tas.GroupId,
-                                                  Stat = tas.Task.Status
-                                              };
-
-
-                        System.Diagnostics.Debug.WriteLine(TaskAssignments1.ToString());
-            */
             IEnumerable<TaskAssignment> TaskAssignments = db.TaskAssignments.Where(
                     r => 
                     r.Task.Status != "Closed" && r.GroupId == GroupId 
@@ -81,28 +73,127 @@ namespace ReviewService.Controllers
             //QUick for demo - no iteration or collection used
             TA = TaskAssignments.First();
 
-            //"Select A.TaskId, A.AccessType, A.GroupId 
-            //from TaskAssignment A 
-            //Join Task T 
-            //on T.TaskId = A.TaskId 
-            //and Status <> 'Closed' 
-            //where GroupId in (2) and TaskId = TaskId "
-            //--1
+  
             return TA;
 
         }
+
+        public int getNodeId(int TaskId, int GroupId)
+        {
+            //Select NodeId from TaskNode where TaskId = 1 and GroupId = 2   --1
+            int nodeId;
+            //Again just grabbing the first one and not worrying if we get multiple hits
+            db.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
+            //Need to handle null reference exceptions
+            try
+            {
+                nodeId =
+                    (from a in db.TaskNodes
+                     where (a.TaskId == TaskId && a.GroupId == GroupId)
+                     select new { a.NodeId }).FirstOrDefault().NodeId;
+            }
+            catch
+            {
+                nodeId = 0;
+                //Silent consume?
+            }
+            return nodeId;
+        }
+
         public void ProcessAction()
         {
             int ApprovalProcessType = 0;
             int GroupId = 0;        //later make this a dictionary (or array or whatever)
+            TaskAssignment TA;
             ApprovalProcessType = getApprovalProcessType(TaskId);
             //Change this later to handle multiple groups for the person
-            GroupId = getUserGroup(ApproverUserId);
-
-
-
+            GroupId = getUserGroup(ApproverUserId);  //Update later to be method chained
+            TA = getTaskAssignment(GroupId, TaskId);
         }
+
+        public class outputsettings
+        {
+           /* public outputsettings(int OutputNodeId, int ConditionTest, int ConditionDescription, int RelationTypeId, int Type, int AccessType)
+            {
+                OutputNodeId = OutputNodeId;
+                ConditionTest, ConditionDescription, RelationTypeId, Type, AccessType, ConditionTest, ConditionDescription, RelationTypeId, Type, AccessType
+
+            }*/
+            //int? is nullable int- not sure if should block it or not really
+           public int? OutputNodeId, RelationTypeId, AccessType;
+            public string ConditionTest, ConditionDescription, Type;
+        }
+
+        public List<outputsettings> getOutput(int NodeId)
+        {
+
+            List<outputsettings> ret = new List<outputsettings>();
+
+            List <int?> outputnodeid;
+
+            outputnodeid = (from a in db.BranchNodes where (a.NodeId == NodeId) select a.OutputNodeId).ToList();
+
+            //ret.Add(new outputsettings());
+            try
+            {
+                ret =
+                    (
+                    from a in db.BranchNodes
+                    where outputnodeid.Contains(a.NodeId)
+                    select 
+                    new outputsettings
+                    {
+                        OutputNodeId = (int)a.OutputNodeId,
+                        ConditionTest = (string)a.BranchCondition.ConditionTest,
+                        ConditionDescription = (string)a.BranchCondition.ConditionDescription,
+                        RelationTypeId = a.RelationTypeId,
+                        Type = (string)a.Type,
+                        AccessType = (int)a.AccessType
+                    }
+                     ).ToList();
+                     }
+            catch { }
+
+
+/*select OutputNodeId, ConditionTest, ConditionDescription, RelationTypeId, Type, AccessType
+from BranchNode B
+join
+BranchCondition C on B.ConditionId = C.ConditionId
+Where NodeId IN
+(
+select OutputNodeId from BranchNode where NodeId = 1
+)*/
+
+            return ret;
+        }
+
+private int getRelativeGroupId(int ApproverUserId, int taskId, int ApprovalProcessType)
+        {
+            /*
+            --Work backwards to original user to determine what relation we have to them
+            --From the above output nodes we have RelationTypeId = 1 (Approve).  We are approver.  
+            --So identify which of the groups to which we belong is the one 
+            --that gives us our approver role
+            select relativeGroupId from GroupRoleRelation where RelationTypeId = 1 and 
+            RelativeGroupId In 
+            (select GroupId from UserGroup where personId = 13)
+            and 
+            MasterGroupId In 
+            (select GroupId from UserGroup where personId = (select raiserUserId from Task where taskId = 1))
+            and ApprovalProcessId = 3
+
+            --2  (i.e. we, the appover, are in Group 2 and that is the group that was assigned the task)
+            */
+
+            return 0;
+
+            }
+
+
     }
+
+
+
 /*
 Select NodeId from TaskNode where TaskId = 1 and GroupId = 2
 --1
