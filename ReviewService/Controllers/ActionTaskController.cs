@@ -167,14 +167,54 @@ select OutputNodeId from BranchNode where NodeId = 1
             return ret;
         }
 
-private int getRelativeGroupId(int ApproverUserId, int taskId, int ApprovalProcessType)
+private List<int> getRelativeGroupId(int ApproverUserId, int iTaskId, int ApprovalProcessType)
         {
+
+            List<int> origGroupIds;
+            int raiserUserId;
+            List<int> UserGroupIds;
+            List<int> relativeGroupIds;
+
+            //Abusing FirstOrDefault
+            //Call to value avoids the nulling of the integer
+            //Implict fail if null though!
+            raiserUserId = 
+                (from a 
+                in db.ReviewTasks
+                where a.TaskId == iTaskId
+                select a.RaiserUserId).FirstOrDefault().Value;
+
+            UserGroupIds = (from a
+               in db.UserGroups
+                            where a.PersonId == ApproverUserId
+                            select a.GroupId).ToList();
+
+            origGroupIds = (from a
+                    in db.UserGroups
+                            where a.PersonId == raiserUserId
+                            select a.GroupId).ToList();
+            int relTypeApprove = 1;
+            //Have to cast away the nullable ints
+                    relativeGroupIds =
+             (
+             from a in db.GroupRoleRelations
+             where a.RelationType.RelationTypeId == relTypeApprove 
+             && UserGroupIds.Contains(a.RelativeGroupId.Value)
+             && origGroupIds.Contains(a.MasterGroupId.Value)
+             && a.ApprovalProcessId.Value == ApprovalProcessType
+             select a.RelativeGroupId
+              ).Cast<int>().ToList();
+            return relativeGroupIds;
+        }
+                        
+            
             /*
             --Work backwards to original user to determine what relation we have to them
             --From the above output nodes we have RelationTypeId = 1 (Approve).  We are approver.  
             --So identify which of the groups to which we belong is the one 
             --that gives us our approver role
-            select relativeGroupId from GroupRoleRelation where RelationTypeId = 1 and 
+
+        select relativeGroupId from GroupRoleRelation where RelationTypeId = 1 and 
             RelativeGroupId In 
             (select GroupId from UserGroup where personId = 13)
             and 
@@ -185,7 +225,7 @@ private int getRelativeGroupId(int ApproverUserId, int taskId, int ApprovalProce
             --2  (i.e. we, the appover, are in Group 2 and that is the group that was assigned the task)
             */
 
-            return 0;
+         
 
             }
 
